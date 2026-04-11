@@ -25,6 +25,7 @@ class Game:
         self.level = 1  # Current stage
         self.lives = START_LIVES
         self.hit_cooldown = 0
+        self.player_name = ""
         
         # Scrolling backgrounds
         self.mountain_x = 0
@@ -173,6 +174,14 @@ class Game:
                 
                 # Draw player
                 self.player.draw(self.screen)
+
+                if self.player_name:
+                    name_surface = font_ui.render(self.player_name, True, (255, 255, 255))
+                    name_box = pygame.Rect(0, 0, name_surface.get_width() + 16, name_surface.get_height() + 8)
+                    name_box.midbottom = (self.player.rect.centerx, self.player.rect.top - 8)
+                    pygame.draw.rect(self.screen, (0, 0, 0), name_box, border_radius=8)
+                    pygame.draw.rect(self.screen, (255, 200, 100), name_box, 2, border_radius=8)
+                    self.screen.blit(name_surface, name_surface.get_rect(center=name_box.center))
                 
                 # Draw UI
                 draw_ui(self.screen, self.score, font_ui, WIDTH, HEIGHT)
@@ -180,7 +189,17 @@ class Game:
                 draw_hearts(self.screen, self.lives)
             
             elif self.state == GameState.START:
-                draw_start_screen(self.screen, self.player, road_img, font_title, font_ui, WIDTH, HEIGHT, self.level)
+                draw_start_screen(
+                    self.screen,
+                    self.player,
+                    road_img,
+                    font_title,
+                    font_ui,
+                    WIDTH,
+                    HEIGHT,
+                    self.level,
+                    self.player_name,
+                )
             
             elif self.state == GameState.GAME_OVER:
                 draw_game_over(self.screen, self.player, road_img, font_title, font_ui, self.score, WIDTH, HEIGHT)

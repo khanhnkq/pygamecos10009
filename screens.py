@@ -228,7 +228,7 @@ def draw_settings(screen, ui_state, settings, bg_img, WIDTH, HEIGHT):
     screen.blit(back_txt, (30, HEIGHT - 50))
 
 
-def draw_start_screen(screen, player, road_img, font_title, font_ui, WIDTH, HEIGHT, level):
+def draw_start_screen(screen, player, road_img, font_title, font_ui, WIDTH, HEIGHT, level, player_name=""):
     """Draw pre-game start screen"""
     y = HEIGHT - road_img.get_height()
     screen.blit(road_img, (0, y))
@@ -242,11 +242,13 @@ def draw_start_screen(screen, player, road_img, font_title, font_ui, WIDTH, HEIG
     t2 = font_ui.render("Press SPACE to Start", True, (120, 130, 160))
     t3 = font_ui.render("(ESC for Menu)", True, (100, 120, 150))
     t4 = font_ui.render(f"Current Stage: Level {level}", True, (255, 140, 120))
+    t5 = font_ui.render(f"Name: {player_name or 'Type your name'}", True, (70, 75, 95))
 
     screen.blit(t1, t1.get_rect(center=(WIDTH//2, HEIGHT//2 - 40)))
     screen.blit(t2, t2.get_rect(center=(WIDTH//2, HEIGHT//2 + 20)))
     screen.blit(t3, t3.get_rect(center=(WIDTH//2, HEIGHT//2 + 60)))
     screen.blit(t4, t4.get_rect(center=(WIDTH//2, HEIGHT//2 - 90)))
+    screen.blit(t5, t5.get_rect(center=(WIDTH//2, HEIGHT//2 - 10)))
 
 
 def draw_game_over(screen, player, road_img, font_title, font_ui, score, WIDTH, HEIGHT):

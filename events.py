@@ -55,12 +55,21 @@ def handle_settings_input(event, ui_state, settings):
     return GameState.SETTINGS
 
 
-def handle_start_input(event):
+def handle_start_input(event, game):
     """Handle input in START state"""
-    if event.key == pygame.K_SPACE:
-        return GameState.RUNNING
-    elif event.key == pygame.K_ESCAPE:
+    if event.key == pygame.K_ESCAPE:
         return GameState.MENU
+    elif event.key == pygame.K_BACKSPACE:
+        game.player_name = game.player_name[:-1]
+    elif event.key == pygame.K_RETURN:
+        if game.player_name.strip():
+            return GameState.RUNNING
+    elif event.unicode and event.unicode.isprintable() and event.key != pygame.K_SPACE:
+        if len(game.player_name) < 14:
+            game.player_name += event.unicode
+    elif event.key == pygame.K_SPACE:
+        if game.player_name.strip():
+            return GameState.RUNNING
     return GameState.START
 
 
@@ -112,7 +121,7 @@ def process_events(pygame_event, game):
             new_state = handle_settings_input(pygame_event, game.ui_state, game.settings)
         
         elif game.state == GameState.START:
-            new_state = handle_start_input(pygame_event)
+            new_state = handle_start_input(pygame_event, game)
         
         elif game.state == GameState.RUNNING:
             new_state = handle_running_input(pygame_event, game.game_input)
